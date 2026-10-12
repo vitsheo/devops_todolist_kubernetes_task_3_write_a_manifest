@@ -15,8 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копіюємо весь код проєкту в контейнер
 COPY . /app/
 
-# Виконуємо міграції та відкриваємо порт
+# Відкриваємо порт
 EXPOSE 8000
 
-# Запускаємо вбудований сервер Django (для продакшну краще gunicorn, але для таски підходить)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Безпечний формат запуску через JSON-масив з підтримкою OS-сигналів
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

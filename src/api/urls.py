@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import liveness_check, readiness_check # Імпортуйте ваші нові views
+from .views import liveness_probe, readiness_probe
 
 urlpatterns = [
-    # ... ваші наявні url-патерни ...
-   path('healthz/live/', liveness_check, name='liveness_check'),
-   path('healthz/ready/', readiness_check, name='readiness_check')]
+    # ... ваші існуючі шляхи API ...
+    path('health/liveness/', liveness_probe, name='liveness_probe'),
+    path('health/readiness/', readiness_probe, name='readiness_probe'),
+]
 
