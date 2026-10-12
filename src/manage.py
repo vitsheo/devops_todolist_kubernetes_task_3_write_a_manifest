@@ -1,21 +1,22 @@
-# Gebruik een officiële Python runtime die voldoet aan de vereisten
-FROM python:3.9-slim
+#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
 
-# Stel de werkomgeving in
-WORKDIR /app
 
-# Installeer systeemvereisten en afhankelijkheden
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+def main():
+    """Run administrative tasks."""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'todo.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
 
-# Kopieer de rest van de applicatiecode
-COPY . .
 
-# Voer database migraties uit tijdens het builden (of via entrypoint)
-RUN python manage.py migrate
-
-# Exposeer de poort waarop Django draait
-EXPOSE 8000
-
-# Start de Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+if __name__ == '__main__':
+    main()
